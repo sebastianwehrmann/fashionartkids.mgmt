@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Model Übersicht</title>
+    <link rel="stylesheet" th:href="@{https://cdn.datatables.net/2.0.2/css/dataTables.dataTables.min.css}">
+    <link rel="stylesheet" th:href="@{https://cdn.datatables.net/buttons/3.0.1/css/buttons.dataTables.css}">
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.min.css}"/>
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{https://cdn.datatables.net/2.0.2/js/dataTables.min.js}"></script>
+    <script th:src="@{https://cdn.datatables.net/buttons/3.0.1/js/dataTables.buttons.js}"></script>
+    <script th:src="@{https://cdn.datatables.net/buttons/3.0.1/js/buttons.dataTables.js}"></script>
+    <script th:src="@{https://cdn.datatables.net/buttons/3.0.1/js/buttons.colVis.min.js}"></script>
+</head>
+<body>
+    <header th:insert="~{fragments/header}"></header>
+    <div class="container-fluid">
+            <h1>Model Übersicht</h1>
+                <div>
+                    <a class="btn btn-dark mt-3 mb-2" th:href="@{/model/new}"><i class="fa-solid fa-plus"></i> Neu</a>
+                </div>
+                <div>
+                    <table id="talentTable" class="display compact">
+                        <thead>
+                            <tr>
+                                <th scope="col" th:text="Nr"></th>
+                                <th scope="col" th:text="Vorname"></th>
+                                <th scope="col" th:text="Nachname"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+        <script type="text/javascript" th:src="@{js/jquery.spring-friendly.js}"></script>
+        <script>
+                $('#talentTable').DataTable({
+                    ajax: '/models/fetch',
+                    serverSide: true,
+                    autoWidth: true,
+                    processing: true,
+                    stateSave: true,
+                    columns: [
+                        { data: 'modelNumber' },
+                        { data: 'firstName'},
+                        { data: 'lastName'},
+                    ]
+                });
+        </script>
+    </div>
+</body>
+</html>

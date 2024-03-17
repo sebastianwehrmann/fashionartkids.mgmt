@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="de">
+<head th:insert="~{fragments/head}">
+    <title>Model Details</title>
+</head>
+<body>
+    <div th:insert="~{fragments/header}"></div>
+        <div class="container">
+            <div class="col">
+                <table class="table">
+                    <tr>
+                        <th>Nummer</th>
+                        <td th:text="${talent.modelNumber}"></td>
+                    </tr>
+                    <tr>
+                        <th>Vorname</th>
+                        <td th:text="${talent.firstName}"></td>
+                    </tr>
+                    <tr>
+                        <th>Nachname</th>
+                        <td th:text="${talent.lastName}"></td>
+                    </tr>
+                    <tr>
+                        <th>Geschlecht</th>
+                        <td th:text="${talent.gender}"></td>
+                    </tr>
+                    <tr>
+                        <th>Geburtsdatum</th>
+                        <td th:text="${talent.birthDate}"></td>
+                    </tr>
+                    <tr>
+                        <th>Straße</th>
+                        <td th:text="${talent.address.street}"></td>
+                    </tr>
+                    <tr>
+                        <th>Hausnummer</th>
+                        <td th:text="${talent.address.streetNumber}"></td>
+                    </tr>
+                    <tr>
+                        <th>PLZ</th>
+                        <td th:text="${talent.address.zip}"></td>
+                    </tr>
+                    <tr>
+                        <th>Ort</th>
+                        <td th:text="${talent.address.city}"></td>
+                    </tr>
+                    <tr>
+                        <th>Land</th>
+                        <td th:text="${talent.address.country}"></td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td th:text="${talent.contact.email}"></td>
+                    </tr>
+                    <tr>
+                        <th>Telefon</th>
+                        <td th:text="${talent.contact.phone}"></td>
+                    </tr>
+                    <tr>
+                        <th>Mobil</th>
+                        <td th:text="${talent.contact.mobile}"></td>
+                    </tr>
+                    <tr>
+                        <th>Größe</th>
+                        <td th:text="|${talent.height}cm|"></td>
+                    </tr>
+                    <tr>
+                        <th>Gewicht</th>
+                        <td th:text="|${talent.weight}kg|"></td>
+                    </tr>
+                    <tr>
+                        <th>Schuhgröße</th>
+                        <td th:text="${talent.shoeSize}"></td>
+                    </tr>
+                    <tr>
+                        <th>Konfektionsgröße</th>
+                        <td th:text="${talent.clothingSize}"></td>
+                    </tr>
+                    <tr>
+                        <th>Augenfarbe</th>
+                        <td th:text="${talent.eyeColor}"></td>
+                    </tr>
+                </table>
+                <form action="#" th:action="@{'/model/{id}/delete'(id=${talent.id})}" th:method="DELETE" >
+                    <button type="submit" class="btn btn-dark">Löschen</button>
+                </form>
+            </div>
+        </div>
+</body>
+</html>
