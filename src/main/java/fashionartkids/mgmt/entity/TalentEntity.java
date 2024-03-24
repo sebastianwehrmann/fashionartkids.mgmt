@@ -5,8 +5,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity(name = "talent")
@@ -17,24 +20,27 @@ public class TalentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
     private String firstName;
     private String lastName;
     private String gender;
     private LocalDate birthDate;
-    private String street;
-    private String streetNumber;
-    private String zip;
-    private String city;
-    private String country;
-    private String phone;
-    private String mobile;
-    private String email;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private AddressEntity address;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "contact_id", referencedColumnName = "id")
+    private ContactEntity contact;
     private Integer height;
     private Integer weight;
     private Integer clothingSize;
     private Integer shoeSize;
     private String eyeColor;
+    private String hairColor;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+    @UpdateTimestamp
+    private LocalDateTime lastUpdated;
     @OneToMany(mappedBy = "talent")
     private List<Image> images;
     @OneToMany(mappedBy = "talent")

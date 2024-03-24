@@ -1,24 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="de">
 <head th:insert="~{fragments/head}">
+    <link rel="stylesheet" th:href="@{/webjars/dropzone/dist/min/dropzone.min.css}"/>
+    <script th:src="@{/webjars/dropzone/dist/min/dropzone.min.js}"></script>
     <title>Model Details</title>
 </head>
 <body>
     <div th:insert="~{fragments/header}"></div>
-        <div class="container">
-            <div class="col">
+    <div class="container-fluid">
+        <h1 th:text="${talent.firstName} + ' ' + ${talent.lastName}"></h1>
+        <div class="row justify-content-between">
+            <div class="col-4">
+                <h2>Stammdaten</h2>
                 <table class="table">
                     <tr>
                         <th>Nummer</th>
                         <td th:text="${talent.modelNumber}"></td>
-                    </tr>
-                    <tr>
-                        <th>Vorname</th>
-                        <td th:text="${talent.firstName}"></td>
-                    </tr>
-                    <tr>
-                        <th>Nachname</th>
-                        <td th:text="${talent.lastName}"></td>
                     </tr>
                     <tr>
                         <th>Geschlecht</th>
@@ -81,10 +78,26 @@
                         <td th:text="${talent.eyeColor}"></td>
                     </tr>
                 </table>
-                <form action="#" th:action="@{'/model/{id}/delete'(id=${talent.id})}" th:method="DELETE" >
-                    <button type="submit" class="btn btn-dark">Löschen</button>
+                <div class="col-auto btn-toolbar">
+                    <form action="#" th:action="@{'/model/{id}/edit'(id=${talent.id})}" th:method="GET">
+                        <button type="submit" class="btn btn-dark m-1"><i class="fa-regular fa-pen-to-square"></i> Bearbeiten</button>
+                    </form>
+                    <form action="#" th:action="@{'/model/{id}/delete'(id=${talent.id})}" th:method="DELETE">
+                        <button type="submit" class="btn btn-danger m-1"><i class="fa-solid fa-trash"></i> Löschen</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-6">
+                <h2>Bilder
+                    <button type="button" class="btn btn-dark"><i class="fa-solid fa-plus"></i></button>
+                </h2>
+                <form action="/file-upload"
+                      class="dropzone"
+                      id="my-awesome-dropzone">
+                    <input type="file" name="file" />
                 </form>
             </div>
         </div>
+    </div>
 </body>
 </html>

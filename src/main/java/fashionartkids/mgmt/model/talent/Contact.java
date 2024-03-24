@@ -1,8 +1,11 @@
 package fashionartkids.mgmt.model.talent;
 
+import jakarta.validation.constraints.Email;
+
 public class Contact {
     private String phone;
     private String mobile;
+    @Email
     private String email;
 
     public String getPhone() {

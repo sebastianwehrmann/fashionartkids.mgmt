@@ -2,9 +2,116 @@
 <html lang="de">
 <head th:insert="~{fragments/head}">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Model bearbeiten</title>
 </head>
 <body>
-    asdasdasd
+    <div th:insert="~{fragments/header}"></div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <h1  class="text-center">Model bearbeiten</h1>
+                <form action="#" th:action="@{'/model/{id}/edit'(id=${talent.id})}" th:object="${talent}" method="post">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="inputFirstName" th:field="*{firstName}" placeholder="Vorname"/>
+                        <label for="inputFirstName">Vorname</label>
+                        <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">FirstName Error</span>
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="inputLastName" th:field="*{lastName}" placeholder="Nachname"/>
+                        <label for="inputLastName">Nachname</label>
+                        <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">LastName Error</span>
+                    </div>
+
+                    <div class="form-floating">
+                        <select class="form-select" id="genderSelect" th:field="*{gender}">
+                            <option selected value="0">auswählen</option>
+                            <option th:each="genderOption : ${T(fashionartkids.mgmt.model.talent.Gender).values()}" th:value="${genderOption}" th:text="${genderOption.displayValue}"></option>
+                        </select>
+                        <label for="genderSelect">Geschlecht</label>
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="date" class="form-control" id="selectBirthdate" th:field="*{birthDate}" th:value="*{birthDate}" placeholder="Geburtsdatum"/>
+                        <label for="selectBirthdate" class="form-label">Geburtsdatum</label>
+                        <span th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}">BirthDate Error</span>
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="inputStreet" th:field="*{address.street}" placeholder="Straße"/>
+                        <label for="inputStreet" class="form-label">Straße</label>
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="inputStreetNumber" th:field="*{address.streetNumber}" placeholder="Hausnummer"/>
+                        <label for="inputStreetNumber" class="form-label">Hausnummer</label>
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="inputZip" th:field="*{address.zip}" placeholder="PLZ"/>
+                        <label for="inputZip" class="form-label">PLZ</label>
+                        <span th:if="${#fields.hasErrors('address.zip')}" th:errors="*{address.zip}">zip Error</span>
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="inputCity" th:field="*{address.city}" placeholder="Ort"/>
+                        <label for="inputCity" class="form-label">Ort</label>
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="inputCountry" th:field="*{address.country}" placeholder="Land"/>
+                        <label for="inputCountry" class="form-label">Land</label>
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="email" class="form-control" id="inputEmail" th:field="*{contact.email}" placeholder="Email"/>
+                        <label for="inputEmail" class="form-label">Email</label>
+                        <span th:if="${#fields.hasErrors('contact.email')}" th:errors="*{contact.email}">email Error</span>
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="tel" class="form-control" id="inputPhone" th:field="*{contact.phone}" placeholder="Telefon"/>
+                        <label for="inputPhone" class="form-label">Telefon</label>
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="tel" class="form-control" id="inputMobile" th:field="*{contact.mobile}" placeholder="Mobil"/>
+                        <label for="inputMobile" class="form-label">Mobil</label>
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="number" class="form-control" id="inputHeight" th:field="*{height}" placeholder="Größe"/>
+                        <label for="inputHeight" class="form-label">Größe</label>
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="number" class="form-control" id="inputWeight" th:field="*{weight}" placeholder="Gewicht"/>
+                        <label for="inputWeight" class="form-label">Gewicht</label>
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="number" class="form-control" id="inputClothingSize" th:field="*{clothingSize}" placeholder="Konfektionsgröße"/>
+                        <label for="inputClothingSize" class="form-label">Konfektion</label>
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="number" class="form-control" id="inputShoeSize" th:field="*{shoeSize}" placeholder="Schuhgröße"/>
+                        <label for="inputShoeSize" class="form-label">Schuhgröße</label>
+                    </div>
+
+                    <div class="form-floating">
+                        <select class="form-select" id="eyeColorSelect" th:field="*{eyeColor}">
+                            <option selected value="0">auswählen</option>
+                            <option th:each="eyeColorOption : ${T(fashionartkids.mgmt.model.talent.EyeColor).values()}" th:value="${eyeColorOption}" th:text="${eyeColorOption.displayValue}"></option>
+                        </select>
+                        <label for="eyeColorSelect">Augenfarbe</label>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-dark mt-3"><i class="fa-regular fa-floppy-disk"></i> Speichern</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

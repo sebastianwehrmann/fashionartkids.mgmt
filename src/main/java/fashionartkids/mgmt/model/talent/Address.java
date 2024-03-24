@@ -1,8 +1,11 @@
 package fashionartkids.mgmt.model.talent;
 
+import jakarta.validation.constraints.Size;
+
 public class Address {
     private String street;
     private String streetNumber;
+    @Size(min=2)
     private String zip;
     private String city;
     private String country;

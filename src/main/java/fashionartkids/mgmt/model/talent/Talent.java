@@ -2,16 +2,28 @@ package fashionartkids.mgmt.model.talent;
 
 import fashionartkids.mgmt.entity.Image;
 import fashionartkids.mgmt.model.job.Job;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class Talent {
-    private Integer id = null;
+    private Long id;
     private String modelNumber;
+    @NotBlank
+    @Size(min=2)
     private String firstName;
     private String lastName;
+    @NotNull
     private Gender gender;
-    private String birthDate;
+    @NotNull
+    @Past
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate birthDate;
     private Address address;
     private Contact contact;
     private Integer height;
@@ -22,11 +34,11 @@ public class Talent {
     private List<Image> images;
     private List<Job> jobs;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -62,11 +74,11 @@ public class Talent {
         this.gender = gender;
     }
 
-    public String getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(String birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 

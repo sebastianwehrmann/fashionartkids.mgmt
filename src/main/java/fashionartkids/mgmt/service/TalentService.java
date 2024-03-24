@@ -1,11 +1,12 @@
 package fashionartkids.mgmt.service;
 
+import fashionartkids.mgmt.entity.AddressEntity;
+import fashionartkids.mgmt.entity.ContactEntity;
 import fashionartkids.mgmt.entity.TalentEntity;
 import fashionartkids.mgmt.model.form.TalentForm;
 import fashionartkids.mgmt.model.talent.*;
 import fashionartkids.mgmt.repository.TalentRepository;
 import fashionartkids.mgmt.repository.TalentRepository2;
-import jakarta.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -23,7 +24,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Service
 public class TalentService {
@@ -34,35 +34,25 @@ public class TalentService {
     private TalentRepository2 talentRepository2;
 
     @GetMapping("/models/fetch")
-    public DataTablesOutput<Talent> fetchAllNew(DataTablesInput input) {
-        DataTablesOutput<Talent> all = talentRepository2.findAll(input, this::mapTalent);
+    public DataTablesOutput<Talent> fetchAll(DataTablesInput input) {
         return talentRepository2.findAll(input, this::mapTalent);
     }
-    public Page<Talent> fetchAll(String keyword, int page, int size, String sortField, String sortDirection) {
-        Direction direction = sortDirection.equals("desc") ? Direction.DESC : Direction.ASC;
-        Order order = new Order(direction, sortField);
-        Pageable pageable = PageRequest.of(page - 1, size, Sort.by(order));
-        Page<Talent> talents;
-        if (keyword == null) {
-            talents = talentRepository.findAll(pageable).map(this::mapTalent);
-        } else {
-            talents = talentRepository.findByFirstNameContainingIgnoreCase(keyword, pageable).map(this::mapTalent);
-        }
-        return talents;
-    }
 
-    public Talent fetch(Integer id) throws ChangeSetPersister.NotFoundException {
-        Optional<TalentEntity> talentEntity = talentRepository.findById(id);
+    public fashionartkids.mgmt.model.talent.Talent fetch(Integer id) throws ChangeSetPersister.NotFoundException {
         return mapTalent(talentRepository.findById(id).orElseThrow(ChangeSetPersister.NotFoundException::new));
     }
 
-    public String add(TalentForm formData) {
+    public String add(Talent formData) {
         try {
             talentRepository.save(mapEntity(formData));
         } catch (Exception e) {
-
+            return "error";
         }
         return "success";
+    }
+
+    public Talent update(Integer id, Talent formData) throws ChangeSetPersister.NotFoundException {
+        return mapTalent(talentRepository.save(mapEntity(formData, talentRepository.findById(id).orElseThrow(ChangeSetPersister.NotFoundException::new))));
     }
 
     public String delete(Integer id) {
@@ -85,7 +75,7 @@ public class TalentService {
         talent.setFirstName(entity.firstName());
         talent.setLastName(entity.lastName());
         talent.setGender(Gender.valueOf(entity.gender()));
-        talent.setBirthDate(entity.birthDate().format(DateTimeFormatter.ofPattern("d.M.y")));
+        talent.setBirthDate(entity.birthDate());
         talent.setHeight(entity.height());
         talent.setWeight(entity.weight());
         talent.setClothingSize(entity.clothingSize());
@@ -95,41 +85,50 @@ public class TalentService {
         talent.setJobs(entity.jobs());
 
         Address address = new Address();
-        address.setStreet(entity.street());
-        address.setStreetNumber(entity.streetNumber());
-        address.setZip(entity.zip());
-        address.setCity(entity.city());
-        address.setCountry(entity.country());
+        address.setStreet(entity.address().street());
+        address.setStreetNumber(entity.address().streetNumber());
+        address.setZip(entity.address().zip());
+        address.setCity(entity.address().city());
+        address.setCountry(entity.address().country());
         talent.setAddress(address);
 
         Contact contact = new Contact();
-        contact.setEmail(entity.email());
-        contact.setPhone(entity.phone());
-        contact.setMobile(entity.mobile());
+        contact.setEmail(entity.contact().email());
+        contact.setPhone(entity.contact().phone());
+        contact.setMobile(entity.contact().mobile());
         talent.setContact(contact);
 
         return talent;
     }
 
-    private TalentEntity mapEntity(TalentForm formData) {
+    private TalentEntity mapEntity(Talent formData) {
         return new TalentEntity()
                 .firstName(formData.getFirstName())
                 .lastName(formData.getLastName())
-                .gender(formData.getGender())
+                .gender(formData.getGender().toString())
                 .birthDate(formData.getBirthDate())
-                .street(formData.getStreet())
-                .streetNumber(formData.getStreetNumber())
-                .zip(formData.getZip())
-                .city(formData.getCity())
-                .country(formData.getCountry())
-                .email(formData.getEmail())
-                .phone(formData.getPhone())
-                .mobile(formData.getMobile())
+                .address(new AddressEntity().street(formData.getAddress().getStreet()).streetNumber(formData.getAddress().getStreetNumber()).zip(formData.getAddress().getZip()).city(formData.getAddress().getCity()).country(formData.getAddress().getCountry()))
+                .contact(new ContactEntity().email(formData.getContact().getEmail()).phone(formData.getContact().getPhone()).mobile(formData.getContact().getMobile()))
                 .height(formData.getHeight())
                 .weight(formData.getWeight())
                 .clothingSize(formData.getClothingSize())
                 .shoeSize(formData.getShoeSize())
-                .eyeColor(formData.getEyeColor());
+                .eyeColor(formData.getEyeColor().toString());
+    }
+
+    private TalentEntity mapEntity(Talent formData, TalentEntity entity) {
+        return entity
+                .firstName(formData.getFirstName())
+                .lastName(formData.getLastName())
+                .gender(formData.getGender().toString())
+                .birthDate(formData.getBirthDate())
+                .address(new AddressEntity().street(formData.getAddress().getStreet()).streetNumber(formData.getAddress().getStreetNumber()).zip(formData.getAddress().getZip()).city(formData.getAddress().getCity()).country(formData.getAddress().getCountry()))
+                .contact(new ContactEntity().email(formData.getContact().getEmail()).phone(formData.getContact().getPhone()).mobile(formData.getContact().getMobile()))
+                .height(formData.getHeight())
+                .weight(formData.getWeight())
+                .clothingSize(formData.getClothingSize())
+                .shoeSize(formData.getShoeSize())
+                .eyeColor(formData.getEyeColor().toString());
     }
 
     private String generateIdentifier(String id, LocalDate birthDate) {

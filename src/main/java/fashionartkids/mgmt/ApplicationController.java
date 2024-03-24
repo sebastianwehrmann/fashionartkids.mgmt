@@ -5,6 +5,9 @@ import fashionartkids.mgmt.model.talent.Talent;
 import fashionartkids.mgmt.service.TalentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
+import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,6 +30,11 @@ public class ApplicationController {
         return "talent-list";
     }
 
+    @GetMapping(value = "/models/fetch")
+    public @ResponseBody DataTablesOutput<Talent> list(DataTablesInput input) {
+        return talentService.fetchAll(input);
+    }
+
     @GetMapping( "/model/{id}")
     public String getModel(@PathVariable("id") int id, Model model) {
         try {
@@ -38,12 +46,12 @@ public class ApplicationController {
     }
     @GetMapping("/model/new")
     public String addModelView(Model model) {
-        model.addAttribute("formData", new TalentForm());
+        model.addAttribute("formData", new Talent());
         return "talent-new";
     }
 
     @PostMapping("/model/new")
-    public String addModel(@Valid @ModelAttribute("formData") TalentForm formData, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String addModel(@Valid @ModelAttribute("formData") Talent formData, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "talent-new";
         }
@@ -56,16 +64,24 @@ public class ApplicationController {
         return "redirect:/models";
     }
 
-    @PostMapping( "/model/{id}")
-    public String updateModel(@PathVariable("id") int id, Model model) {
-        //TalentEntity talent = talentRepository.findById(id).get();
-        return "";
-    }
 
     @GetMapping("model/{id}/edit")
-    public String editModel(@PathVariable("id") int id, Model model) {
+    public String editModel(@PathVariable("id") int id, Model model) throws ChangeSetPersister.NotFoundException {
+        model.addAttribute("talent", talentService.fetch(id));
         return "talent-edit";
     }
+
+    @PostMapping( "/model/{id}/edit")
+    public String updateModel(@PathVariable("id") int id, @Valid @ModelAttribute("formData") Talent formData, Model model) {
+        try {
+            model.addAttribute("talent", talentService.update(id, formData));
+        } catch (Exception e) {
+
+        }
+
+        return "redirect:/model/{id}";
+    }
+
 
     @DeleteMapping( "/model/{id}/delete")
     public String deleteModel(@PathVariable("id") int id) {

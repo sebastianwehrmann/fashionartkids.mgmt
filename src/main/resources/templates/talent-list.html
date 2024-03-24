@@ -25,9 +25,24 @@
                     <table id="talentTable" class="display compact">
                         <thead>
                             <tr>
-                                <th scope="col" th:text="Nr"></th>
+                                <th scope="col" th:text="Modelnummer"></th>
                                 <th scope="col" th:text="Vorname"></th>
                                 <th scope="col" th:text="Nachname"></th>
+                                <th scope="col" th:text="Geschlecht"></th>
+                                <th scope="col" th:text="Geburtsdatum"></th>
+                                <th scope="col" th:text="Straße"></th>
+                                <th scope="col" th:text="Nr"></th>
+                                <th scope="col" th:text="PLZ"></th>
+                                <th scope="col" th:text="Ort"></th>
+                                <th scope="col" th:text="Land"></th>
+                                <th scope="col" th:text="Email"></th>
+                                <th scope="col" th:text="Tel"></th>
+                                <th scope="col" th:text="Mobil"></th>
+                                <th scope="col" th:text="Größe"></th>
+                                <th scope="col" th:text="Gewicht"></th>
+                                <th scope="col" th:text="Konfektionsgröße"></th>
+                                <th scope="col" th:text="Schuhgröße"></th>
+                                <th scope="col" th:text="Augenfarbe"></th>
                             </tr>
                         </thead>
                     </table>
@@ -36,16 +51,61 @@
         <script>
                 $('#talentTable').DataTable({
                     ajax: '/models/fetch',
+                    fixedHeader: true,
                     serverSide: true,
                     autoWidth: true,
                     processing: true,
+                    responsive: true,
                     stateSave: true,
                     columns: [
-                        { data: 'modelNumber' },
-                        { data: 'firstName'},
-                        { data: 'lastName'},
-                    ]
-                });
+                        {
+                            data: 'modelNumber', searchable: false, orderable: false,
+                            render: function (data, type, row, meta) {
+                                return '<a href="/model/' + row.id + '">' + data + '</a>';
+                            }
+                        },
+                        {data: 'firstName'},
+                        {data: 'lastName'},
+                        {data: 'gender'},
+                        {data: 'birthDate' },
+                        {data: 'address.street'},
+                        {data: 'address.streetNumber' },
+                        {data: 'address.zip' },
+                        {data: 'address.city' },
+                        {data: 'address.country' },
+                        {data: 'contact.email',
+                            fnCreatedCell: function (nTd, sData, oData) {
+                                $(nTd).html("<a href='mailto:" + oData.contact.email + "'>" + oData.contact.email + "</a>");
+                            }
+                        },
+                        {data: 'contact.phone',
+                            fnCreatedCell: function (nTd, sData, oData) {
+                                $(nTd).html("<a href='tel:" + oData.contact.phone + "'>" + oData.contact.phone + "</a>");
+                            }
+                        },
+                        {data: 'contact.mobile',
+                            fnCreatedCell: function (nTd, sData, oData) {
+                                $(nTd).html("<a href='tel:" + oData.contact.mobile + "'>" + oData.contact.mobile + "</a>");
+                            }
+                        },
+                        {data: 'height'},
+                        {data: 'weight'},
+                        {data: 'clothingSize'},
+                        {data: 'shoeSize'},
+                        {data: 'eyeColor'},
+                    ],
+                    layout: {
+                        topStart: {
+                            buttons: [
+                                {
+                                    extend: 'colvis',
+                                    collectionLayout: 'fixed columns',
+                                    popoverTitle: 'Column visibility control'
+                                }
+                            ]
+                        }
+                    }
+                })
         </script>
     </div>
 </body>

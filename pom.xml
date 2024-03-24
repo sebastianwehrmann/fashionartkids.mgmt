@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.3</version>
+		<version>3.2.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>fashionartkids</groupId>
@@ -92,14 +92,14 @@
 			<version>1.13.5</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-gcp-starter</artifactId>
-			<version>1.2.8.RELEASE</version>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>lightgallery</artifactId>
+			<version>2.7.1</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-gcp-starter-sql-mysql</artifactId>
-			<version>1.2.8.RELEASE</version>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>dropzone</artifactId>
+			<version>6.0.0-beta.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.darrachequesne</groupId>
@@ -129,6 +129,19 @@
 				<configuration>
 					<deploy.projectId>fashionartkids-test</deploy.projectId>
 					<deploy.version>0-0-2</deploy.version>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.1</version>
+				<configuration>
+					<from>
+						<image>openjdk:21</image>
+					</from>
+					<to>
+						<image>europe-west3-docker.pkg.dev/fashionartkids/fashionartkids/test</image>
+					</to>
 				</configuration>
 			</plugin>
 		</plugins>
