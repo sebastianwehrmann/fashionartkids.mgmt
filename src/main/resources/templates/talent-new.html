@@ -6,7 +6,7 @@
 </head>
 <body>
     <div th:insert="~{fragments/header}"></div>
-    <div class="container-fluid">
+    <div class="container-fluid min-vh-100">
         <div class="row justify-content-center">
             <div class="col-6">
                 <h1  class="text-center">Model anlegen</h1>
@@ -27,7 +27,7 @@
                         <ul class="btn-group list-unstyled">
                             <li th:each="genderOption : ${T(fashionartkids.mgmt.model.talent.Gender).values()}">
                                 <input type="radio" class="btn-check" th:field="*{gender}" th:value="${genderOption}">
-                                <label class="btn btn-outline-primary" th:for="${#ids.prev('gender')}" th:value="${genderOption}" th:text="${genderOption.displayValue}"></label>
+                                <label class="btn btn-outline-dark me-1" th:for="${#ids.prev('gender')}" th:value="${genderOption}" th:text="${genderOption.displayValue}"></label>
                             </li>
                         </ul>
                     </div>
@@ -112,5 +112,6 @@
             </div>
         </div>
     </div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

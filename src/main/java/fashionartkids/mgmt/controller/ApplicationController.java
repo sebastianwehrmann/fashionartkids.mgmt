@@ -1,7 +1,7 @@
-package fashionartkids.mgmt;
+package fashionartkids.mgmt.controller;
 
-import fashionartkids.mgmt.model.form.TalentForm;
 import fashionartkids.mgmt.model.talent.Talent;
+import fashionartkids.mgmt.service.MediaService;
 import fashionartkids.mgmt.service.TalentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -19,6 +20,9 @@ public class ApplicationController {
 
     @Autowired
     private TalentService talentService;
+
+    @Autowired
+    MediaService mediaService;
 
     @GetMapping("/")
     public String homeView() {
@@ -93,6 +97,13 @@ public class ApplicationController {
     public String searchModel(Model model) {
         return "talent-search";
     }
+
+    @PostMapping("/model/{id}/media/upload")
+    public String uploadMedia(@PathVariable("id") int id, @RequestParam MultipartFile[] files) {
+        mediaService.add(id, files);
+        return "redirect:/models";
+    }
+
 
     @GetMapping("/jobs")
     public String getAllJobs(Model model) {

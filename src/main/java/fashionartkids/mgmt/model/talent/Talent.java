@@ -1,6 +1,6 @@
 package fashionartkids.mgmt.model.talent;
 
-import fashionartkids.mgmt.entity.Image;
+import fashionartkids.mgmt.entity.MediaEntity;
 import fashionartkids.mgmt.model.job.Job;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Talent {
@@ -31,9 +32,10 @@ public class Talent {
     private Integer clothingSize;
     private Integer shoeSize;
     private EyeColor eyeColor;
-    private List<Image> images;
+    private List<MediaEntity> media;
     private List<Job> jobs;
-
+    private LocalDateTime created;
+    private LocalDateTime updated;
     public Long getId() {
         return id;
     }
@@ -138,12 +140,12 @@ public class Talent {
         this.eyeColor = eyeColor;
     }
 
-    public List<Image> getImages() {
-        return images;
+    public List<MediaEntity> getMedia() {
+        return media;
     }
 
-    public void setImages(List<Image> images) {
-        this.images = images;
+    public void setMedia(List<MediaEntity> media) {
+        this.media = media;
     }
 
     public List<Job> getJobs() {
@@ -154,4 +156,19 @@ public class Talent {
         this.jobs = jobs;
     }
 
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
+    }
+
+    public LocalDateTime getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(LocalDateTime updated) {
+        this.updated = updated;
+    }
 }

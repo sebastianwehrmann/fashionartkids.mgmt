@@ -3,19 +3,11 @@ package fashionartkids.mgmt.service;
 import fashionartkids.mgmt.entity.AddressEntity;
 import fashionartkids.mgmt.entity.ContactEntity;
 import fashionartkids.mgmt.entity.TalentEntity;
-import fashionartkids.mgmt.model.form.TalentForm;
 import fashionartkids.mgmt.model.talent.*;
 import fashionartkids.mgmt.repository.TalentRepository;
-import fashionartkids.mgmt.repository.TalentRepository2;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.stereotype.Service;
@@ -23,19 +15,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 @Service
 public class TalentService {
 
     @Autowired
     private TalentRepository talentRepository;
-    @Autowired
-    private TalentRepository2 talentRepository2;
 
     @GetMapping("/models/fetch")
     public DataTablesOutput<Talent> fetchAll(DataTablesInput input) {
-        return talentRepository2.findAll(input, this::mapTalent);
+        return talentRepository.findAll(input, this::mapTalent);
     }
 
     public fashionartkids.mgmt.model.talent.Talent fetch(Integer id) throws ChangeSetPersister.NotFoundException {
@@ -81,7 +70,7 @@ public class TalentService {
         talent.setClothingSize(entity.clothingSize());
         talent.setShoeSize(entity.shoeSize());
         talent.setEyeColor(EyeColor.valueOf(entity.eyeColor()));
-        talent.setImages(entity.images());
+        talent.setMedia(entity.media());
         talent.setJobs(entity.jobs());
 
         Address address = new Address();
@@ -97,6 +86,9 @@ public class TalentService {
         contact.setPhone(entity.contact().phone());
         contact.setMobile(entity.contact().mobile());
         talent.setContact(contact);
+
+        talent.setCreated(entity.createdAt());
+        talent.setUpdated(entity.lastUpdated());
 
         return talent;
     }

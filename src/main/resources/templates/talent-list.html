@@ -16,7 +16,7 @@
 </head>
 <body>
     <header th:insert="~{fragments/header}"></header>
-    <div class="container-fluid">
+    <div class="container-fluid min-vh-100">
             <h1>Model Übersicht</h1>
                 <div>
                     <a class="btn btn-dark mt-3 mb-2" th:href="@{/model/new}"><i class="fa-solid fa-plus"></i> Neu</a>
@@ -25,7 +25,7 @@
                     <table id="talentTable" class="display compact">
                         <thead>
                             <tr>
-                                <th scope="col" th:text="Modelnummer"></th>
+                                <th scope="col" th:text="Nr"></th>
                                 <th scope="col" th:text="Vorname"></th>
                                 <th scope="col" th:text="Nachname"></th>
                                 <th scope="col" th:text="Geschlecht"></th>
@@ -108,5 +108,6 @@
                 })
         </script>
     </div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

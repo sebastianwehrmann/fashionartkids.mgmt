@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -40,9 +41,10 @@ public class TalentEntity {
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp
+    @Column(insertable = false)
     private LocalDateTime lastUpdated;
     @OneToMany(mappedBy = "talent")
-    private List<Image> images;
+    private List<MediaEntity> media;
     @OneToMany(mappedBy = "talent")
     private List<Job> jobs;
 }

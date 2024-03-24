@@ -5,17 +5,20 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-@Entity
+@Entity(name = "media")
 @Accessors(fluent = true, chain = true)
 @Getter
 @Setter
-public class Image {
+public class MediaEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue
+    private Long id;
     private String hash;
+    private String type;
+    private String filename;
     @ManyToOne
     @JoinColumn(name = "talent_id", nullable = false)
     private TalentEntity talent;
+
 }

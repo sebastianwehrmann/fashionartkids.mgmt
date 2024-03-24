@@ -7,7 +7,7 @@
 </head>
 <body>
     <div th:insert="~{fragments/header}"></div>
-    <div class="container-fluid">
+    <div class="container-fluid min-vh-100">
         <h1 th:text="${talent.firstName} + ' ' + ${talent.lastName}"></h1>
         <div class="row justify-content-between">
             <div class="col-4">
@@ -19,11 +19,11 @@
                     </tr>
                     <tr>
                         <th>Geschlecht</th>
-                        <td th:text="${talent.gender}"></td>
+                        <td th:text="${talent.gender.displayValue}"></td>
                     </tr>
                     <tr>
                         <th>Geburtsdatum</th>
-                        <td th:text="${talent.birthDate}"></td>
+                        <td th:text="${#temporals.format(talent.birthDate, 'dd.MM.yyy')}"></td>
                     </tr>
                     <tr>
                         <th>Straße</th>
@@ -75,7 +75,15 @@
                     </tr>
                     <tr>
                         <th>Augenfarbe</th>
-                        <td th:text="${talent.eyeColor}"></td>
+                        <td th:text="${talent.eyeColor.displayValue}"></td>
+                    </tr>
+                    <tr>
+                        <th>Erstellt</th>
+                        <td th:text="${#temporals.format(talent.created, 'dd.MM.yyy HH:mm')}"></td>
+                    </tr>
+                    <tr>
+                        <th>Zuletzt bearbeitet</th>
+                        <td th:text="${#temporals.format(talent.updated, 'dd.MM.yyy HH:mm')} ?: '-'"></td>
                     </tr>
                 </table>
                 <div class="col-auto btn-toolbar">
@@ -91,13 +99,20 @@
                 <h2>Bilder
                     <button type="button" class="btn btn-dark"><i class="fa-solid fa-plus"></i></button>
                 </h2>
-                <form action="/file-upload"
-                      class="dropzone"
-                      id="my-awesome-dropzone">
-                    <input type="file" name="file" />
+                <form
+                        id="uploadForm"
+                        method="post"
+                        th:action="@{'/model/{id}/media/upload'(id=${talent.id})}"
+                        enctype="multipart/form-data">
+                    <input type="file" multiple name="files" />
+                    <button class="btn btn-sm btn-outline-success float-right" type="submit">
+                        Upload
+                    </button>
                 </form>
+
             </div>
         </div>
     </div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>
